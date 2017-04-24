@@ -232,7 +232,7 @@ int islessthan_int(const void* m1,const void* m2,int objectsize){
 }
 
 #define RUNTIME 1
-#define VECTORLEN 10000
+#define VECTORLEN 200
 
 void initinputfile(){
 	int* a=(int*)malloc(sizeof(int)*VECTORLEN);

@@ -62,11 +62,11 @@ int64 zuidagys(int64 m,int64 n){
 	int64 ans=0;
 	if(!(m&0x1)&&!(n&0x1))
 		ans=2*zuidagys(m>>1,n>>1);
-	else if((m&0x1)&&!(n&0x1))
+	if((m&0x1)&&!(n&0x1))
 		ans=zuidagys(m,n>>1);
-	else if(!(m&0x1)&&(n&0x1))
+	if(!(m&0x1)&&(n&0x1))
 		ans=zuidagys(m>>1,n);
-	else if((m&0x1)&&(n&0x1))
+	if((m&0x1)&&(n&0x1))
 		ans=zuidagys(m,m-n);
 	return ans;
 }

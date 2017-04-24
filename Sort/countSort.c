@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <memory.h>
-#define VECTORLEN 20
+#define VECTORLEN 200
 #define pointer_a(i) (void*)((char*)a+(i)*a_object_size)
 
 void swap(void* m1,void* m2,int objectsize){
@@ -66,33 +66,37 @@ int islessthan_int(const void* m1,const void* m2,int objectsize){
 int main(){
 	int* a=(int*)malloc(VECTORLEN*sizeof(int));
 	printf("Before sort!\n");
-	srand((unsigned)time(NULL));
+	time_t seed=time(NULL);
+	srand((unsigned)seed);
 	int i=0;
 	for(i=0;i<VECTORLEN;i++){
 		a[i]=rand()%VECTORLEN;
-		printf("%d ",a[i]);
+		//printf("%d ",a[i]);
 	}
 	printf("\nafter countSort: \n");
 	void countSort(int* a,int len);
 	countSort(a,VECTORLEN);
+	FILE *fp=fopen("countsort.txt","w");
 	for(i=0;i<VECTORLEN;i++){
-		printf("%d ",a[i]);
+		fprintf(fp,"%d ",a[i]);
 	}
 	printf("\n");
 	//quicksort for compare
 	printf("Before sort!\n");
-	srand((unsigned)time(NULL));
+	srand((unsigned)seed);
 	for(i=0;i<VECTORLEN;i++){
 		a[i]=rand()%VECTORLEN;
-		printf("%d ",a[i]);
+		//printf("%d ",a[i]);
 	}
 	printf("\nafter quickSort: \n");
 	quickSort(a,sizeof(int),VECTORLEN,islessthan_int);
+	fp=fopen("countsortcompare.txt","w");
 	for(i=0;i<VECTORLEN;i++){
-		printf("%d ",a[i]);
+		fprintf(fp,"%d ",a[i]);
 	}
 	printf("\n");
 	//free data
+	free(fp);
 	free(a);
 	return 0;
 }
