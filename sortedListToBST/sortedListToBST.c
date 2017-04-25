@@ -15,6 +15,15 @@ struct __ListNode{
 };
 
 typedef struct __ListNode ListNode;
+
+struct __TreeNode{
+	int value;
+	struct __TreeNode* left;
+	struct __TreeNode* right;
+};
+
+typedef struct __TreeNode TreeNode;
+
 void swap(int* a,int* b){
 	if(a==b) return;
 	int temp=*a;
@@ -23,29 +32,42 @@ void swap(int* a,int* b){
 	return;
 }
 
-void mergeSortList(ListNode* ls){
-	if(!ls||!ls->next) return;
+ListNode* mergeSortList(ListNode* ls){
+	if(!ls||!ls->next) return ls;
 	if(!ls->next->next){
 		if(ls->value>ls->next->value){
 			swap(&ls->value,&ls->next->value);
 		}
+		return ls;
 	}
+	ListNode* p=ls;
+	while(p){
+		printf("%d ",p->value);
+		p=p->next;
+	}
+	printf("\n");
 	ListNode* __mergeSortList(ListNode* a,ListNode* b);
 	ListNode* pslow=ls;
-	ListNode* pquick=ls;
-	while(pquick){
-		int i=0;
-		for(i=0;i<1;i++){
-			if(pquick)
-				pquick=pquick->next;
-		}
+	ListNode* pquick=ls->next;
+	/*while(pquick){
+		if(pquick)
+			pquick=pquick->next;
+		if(pquick)
+			pquick=pquick->next;
+		else break;
 		if(pslow)
 			pslow=pslow->next;
+	}*/
+	while(pslow->next&&pquick->next&&pquick->next->next){
+		pquick=pquick->next->next;
+		pslow=pslow->next;
 	}
+	printf("outloop\n");
+	printf("pslow:%d pslow->next:%d\n",pslow->value,pslow->next->value);
 	pquick=pslow->next;
 	pslow->next=NULL;
-	mergeSortList(ls);
-	mergeSortList(pquick);
+	ls=mergeSortList(ls);
+	pquick=mergeSortList(pquick);
 	ls=__mergeSortList(ls,pquick);
 	return;
 }
@@ -65,6 +87,42 @@ ListNode* __mergeSortList(ListNode* a,ListNode* b){
 		return b;
 	}
 	return NULL;
+}
+
+void quicksort(ListNode* ls){
+	void __quicksort_aux(ListNode* ls,ListNode* lsend);
+	__quicksort_aux(ls,NULL);
+	return;
+}
+
+void __quicksort_aux(ListNode* ls,ListNode* lsend){
+	if(ls==lsend||ls->next==lsend){
+		return;
+	}
+	ListNode* patition(ListNode* ls,ListNode* lsend);
+	ListNode* pend=NULL;
+	ListNode* pstart=NULL;
+	pend=patition(ls,lsend);
+	pstart=pend->next;
+	__quicksort_aux(ls,pend);
+	__quicksort_aux(pstart,lsend);
+	return;
+}
+
+ListNode* patition(ListNode* ls,ListNode* lsend){
+	if(ls==lsend||ls->next==lsend) return ls;
+	ListNode* p=ls;
+	int flag=ls->value;
+	ListNode* q=ls->next;
+	while(q!=lsend){
+		if(q->value<flag){
+			p=p->next;
+			swap(&p->value,&q->value);
+		}
+		q=q->next;
+	}
+	swap(&ls->value,&p->value);
+	return p;
 }
 
 int shuff[7]={0,3,4,2,1,5,6};
@@ -90,9 +148,11 @@ void initnode(){
 	for(i=0;i<7;i++){
 		node[i].value=shuffle();
 		printf("%d ",node[i].value);
-		if(i<6) node[i].next=&node[i+1];
+		if(i<6)
+			node[i].next=&node[i+1];
+		else
+			node[i].next=NULL;
 	}
-	node[i].next=NULL;
 	printf("\n");
 }
 
@@ -104,12 +164,45 @@ int main(){
 		p=p->next;
 	}
 	printf("\nstart sort!\n");
-	mergeSortList(node);
-	printf("After merge sort:\n");
+	//p=mergeSortList(node);
+	quicksort(node);
+	p=node;
+	printf("After sort:\n");
+	int vnode[7];
 	int i=0;
 	for(i=0;i<7;i++){
-		printf("%d ",node[i].value);
+		printf("%d ",p->value);
+		vnode[i]=p->value;
+		p=p->next;
 	}
+	TreeNode* sortedListToBST(int* v,int i,int j);
+	void printTreeNode(TreeNode* root);
+	printf("\nbinary search tree:\n");
+	printTreeNode(sortedListToBST(vnode,0,6));
 	printf("\n");
 	return 0;
+}
+
+TreeNode* sortedListToBST(int* v,int i,int j){
+	int mid=i+(j-i)/2;
+	TreeNode* proot=(TreeNode*)malloc(sizeof(TreeNode));
+	memset(proot,0,sizeof(TreeNode));
+	proot->value=v[mid];
+	proot->left=NULL;
+	proot->right=NULL;
+	if(i==j)
+		return proot;
+	if(i>j) return NULL;
+	proot->left=sortedListToBST(v,i,mid-1);
+	proot->right=sortedListToBST(v,mid+1,j);
+	return proot;
+}
+
+void printTreeNode(TreeNode* root){
+	if(root==NULL) return;
+	printf("%d ",root->value);
+	if(root->left) printTreeNode(root->left);
+	if(root->right) printTreeNode(root->right);
+	free(root);
+	return;
 }
