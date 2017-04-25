@@ -69,7 +69,7 @@ ListNode* mergeSortList(ListNode* ls){
 	ls=mergeSortList(ls);
 	pquick=mergeSortList(pquick);
 	ls=__mergeSortList(ls,pquick);
-	return;
+	return ls;
 }
 
 ListNode* __mergeSortList(ListNode* a,ListNode* b){
@@ -164,9 +164,9 @@ int main(){
 		p=p->next;
 	}
 	printf("\nstart sort!\n");
-	//p=mergeSortList(node);
-	quicksort(node);
-	p=node;
+	p=mergeSortList(node);
+	//quicksort(node);
+	//p=node;
 	printf("After sort:\n");
 	int vnode[7];
 	int i=0;
