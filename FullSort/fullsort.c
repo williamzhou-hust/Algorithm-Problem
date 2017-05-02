@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 void swap(int* a,int* b){
-	ir(a==b) return;
+	if(a==b) return;
 	int temp=*a;
 	*a=*b;
 	*b=temp;
@@ -31,18 +31,40 @@ int isHaveKLTN(int* a,int n,int k){
 	else return 0;
 }
 
-int NumOfFullSortKLTN(int n){
+void NumOfFullSortKLTN(int n,int k){
+	int* a=(int*)malloc(n*sizeof(int));
+	int i=0;
+	for(i=0;i<n;i++) a[i]=i+1;
 	void permutation(int* a,int n,int k,int start,int end);
+	permutation(a,n,k,0,n-1);
+	free(a);
+	return; 
 }
+
+int LTKcount=0;
 
 void permutation(int* a,int n,int k,int start,int end){
 	if(!a){
 		printf("wrong input!\n");
 	}
-	static int LTKcount=0;
+	if(start>end) return;
 	if(start==end&&isHaveKLTN(a,n,k)) ++LTKcount;
-	else{
-		
+	else if(start!=end){
+		int i=0;
+		for(i=start;i<=end;i++){
+			swap(a+start,a+i);
+			permutation(a,n,k,i,end);
+			swap(a+start,a+i);
+		}
 	}
+	return;
+}
 
+int main(){
+	int n,k;
+	while(scanf("%d %d",&n,&k)){
+		LTKcount=0;
+		NumOfFullSortKLTN(n,k);
+		printf("n's permutation have %d lessthannumber\n",LTKcount);
+	}
 }
