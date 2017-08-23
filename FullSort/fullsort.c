@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void swap(int* a,int* b){
 	if(a==b) return;
@@ -46,25 +47,40 @@ int LTKcount=0;
 void permutation(int* a,int n,int k,int start,int end){
 	if(!a){
 		printf("wrong input!\n");
+		return;
 	}
 	if(start>end) return;
+<<<<<<< HEAD
 	if(start==end&&isHaveKLTN(a,n,k)) ++LTKcount;
 	else if(start<=end){
+=======
+	if(start==end){
+		if(isHaveKLTN(a,n,k))
+			++LTKcount;
+		/*int i=0;
+		for(i=0;i<n;i++) printf("%d ",a[i]);
+		printf("\n");*/
+		return;
+	}
+	else if(start<end){
+>>>>>>> 13a8a563046946227642a29c8d729dd0032a4f0b
 		int i=0;
 		for(i=start;i<=end;i++){
 			swap(a+start,a+i);
-			permutation(a,n,k,i,end);
+			permutation(a,n,k,start+1,end);
 			swap(a+start,a+i);
 		}
+		return;
 	}
-	return;
 }
 
 int main(){
 	int n,k;
 	while(scanf("%d %d",&n,&k)){
+		clock_t starttime=clock();
 		LTKcount=0;
 		NumOfFullSortKLTN(n,k);
-		printf("n's permutation have %d lessthannumber\n",LTKcount);
+		clock_t endtime=clock();
+		printf("n's permutation have %d lessthannumber,use %fs\n",LTKcount,(double)(endtime-starttime)/CLOCKS_PER_SEC);
 	}
 }
