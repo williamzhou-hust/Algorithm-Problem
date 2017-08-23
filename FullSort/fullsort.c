@@ -49,7 +49,7 @@ void permutation(int* a,int n,int k,int start,int end){
 	}
 	if(start>end) return;
 	if(start==end&&isHaveKLTN(a,n,k)) ++LTKcount;
-	else if(start!=end){
+	else if(start<=end){
 		int i=0;
 		for(i=start;i<=end;i++){
 			swap(a+start,a+i);
